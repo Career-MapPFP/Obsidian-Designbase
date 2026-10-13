@@ -62,8 +62,9 @@ Three bases in `Bases/`, part of the system:
 - **Vault Health:** one view per kind of drift (missing Note Type / invalid Note Type / missing Parent / untagged / old properties / Inbox backlog / lonely MOCs).
 - **Vault Overview:** by Note Type, by area, hubs ranked by how many notes point to them, active in the last 30 days, Working notes going stale (90+ days, outside Archive), Reference to re-check (180+ days untouched).
 - **MOC Contents:** embedded in the MOC template, so every hub lists its connected notes (archived ones included).
-- [ ] Open each base in Obsidian and check every view renders (written from the docs, not yet seen in the app).
-- [ ] Decide: add the MOC Contents embed to the existing MOCs too?
+- [x] Vault Health checked in Obsidian: All issues shows one column per problem (140 notes, mostly Career Map waiting on step 6).
+- [ ] Check Vault Overview's views and a MOC's embedded table in Obsidian.
+- [x] MOC Contents embed added to all 18 existing MOCs (2026-10-13). `/clean-inbox` adds it to every MOC it creates.
 
 ### 6. Career Map
 Built with a deliberate top-down structure before the system existed (about 150 notes, 130 of them with no properties).

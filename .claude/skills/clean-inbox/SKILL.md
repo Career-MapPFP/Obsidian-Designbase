@@ -46,6 +46,8 @@ Apply the routing rules first. They're the user's own decisions and override you
    - If the Concept MOC is a single file directly in a top-level folder (e.g. `04. Analysis/Designbase.md`), it needs a folder now. Add `{"path": <MOC path>, "destination": "<top-level folder>/<Concept name>"}` to `move_existing` and use that folder as the destination. Create a folder **only** for a Reference note or a sub-MOC, never for Working notes.
 6. **Review only if you genuinely can't tell**, for example two equally good homes, or you can't tell whether it's worth keeping. Ask one short, specific question. Aim for very few.
 
+**New MOCs** automatically end with `![[MOC Contents.base]]` (a live list of the notes in that MOC), so don't add it to `body` yourself.
+
 **Content:** never lose content. When you create a MOC, you may fold short notes into it if they belong in the hub itself: put their full text in the MOC's `body` and list them in `merged_from` (the script then deletes them). Otherwise don't edit note text. The script only changes properties, adds a `Related:` line for links from old properties, and moves files.
 
 **Scope:** only notes in the Inbox and the Review folder. Never touch anything else.

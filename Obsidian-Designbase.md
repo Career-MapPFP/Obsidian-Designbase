@@ -167,3 +167,5 @@ A synthesis, not something novel — worth knowing so you can borrow from any of
 - **`Reference` property** for secondary grouping — dropped; use an inline link.
 - **Letting Career Map's structure drive the vault** — the vault has one system; Career Map is one Concept within it.
 - **Idea Promotion System** — out of scope for this system.
+
+![[MOC Contents.base]]

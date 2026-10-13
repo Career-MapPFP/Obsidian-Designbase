@@ -26,6 +26,7 @@ SETTINGS_FILE = REPO_DIR / "Inbox Cleanup Settings.md"
 UNDO_DIR = REPORTS_DIR / ".undo"
 REPORT = REPORTS_DIR / "Inbox Cleanup Report.md"
 NOTE_TYPES = {"Working", "Reference", "MOC"}
+MOC_EMBED = "![[MOC Contents.base]]"  # same as the MOC template
 # Old linking properties (retired by the system). Their links are kept as a "Related:" line.
 OLD_LINK_PROPS = {"Action", "Concept", "Reference", "Parent MOC", "Project", "Domain", "Analysis"}
 
@@ -254,7 +255,8 @@ def moc_text(m: dict) -> str:
     tags = "".join(f"\n  - {t}" for t in m.get("tags", []))
     parent = f'"[[{m["parent"]}]]"' if m.get("parent") else ""
     body = m.get("body", "").strip()
-    return f"---\ntags:{tags}\nNote Type:\n  - MOC\nParent: {parent}".rstrip() + "\n---\n" + (f"\n{body}\n" if body else "")
+    body = (body + "\n\n" if body else "") + MOC_EMBED  # live list of the notes in this MOC
+    return f"---\ntags:{tags}\nNote Type:\n  - MOC\nParent: {parent}".rstrip() + "\n---\n\n" + body + "\n"
 
 
 def apply(vault: Path, s: dict, plan: dict, preview_only: bool) -> None:
