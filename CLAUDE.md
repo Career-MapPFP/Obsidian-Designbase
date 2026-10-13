@@ -51,7 +51,7 @@ The goal is to use Obsidian well **with as little admin as possible**. Organizat
 ## Scope
 
 - The system applies to the whole `01. Career Map` vault, including the `01. Career Map` project folder. Bringing that folder into the system is backlog item 3. It was built top-down before the system existed, so it may need exceptions. Those exceptions apply only to this vault, never to the system, and they're written down in `Career Map in Obsidian.md`. Don't restructure the folder until item 3 has been planned with the user.
-- `03. Everyday` (daily notes) stays as it is. The user likes it, so the cleanup doesn't touch it.
+- `03. Everyday` (daily notes) stays where it is. Daily notes are `Note Type: Working` with no `Parent` (see the Daily template in `Templates/Custom/`).
 - Most of the vault was written before this system existed. Many notes have no properties or still use old ones (`Action`, `Concept`, `Reference`, `Draft`). That's expected. Fixing it is backlog item 2, so don't treat it as a design flaw.
 
 ## Before you change notes

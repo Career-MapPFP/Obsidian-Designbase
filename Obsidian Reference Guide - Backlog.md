@@ -73,7 +73,7 @@ Built with a deliberate top-down structure before the system existed (about 150 
 **Parked:** Status/As of Date as standard? · `Designbase.md` has no folder · finish `Obsidian-Background`?
 
 **Decided:**
-- Daily notes stay as they are in `03. Everyday`, and the cleanup doesn't touch them.
+- Daily notes stay in `03. Everyday`, with `Note Type: Working` and no `Parent`. All 28 existing daily notes were updated on 2026-10-13.
 - ~~Step 2: Python reports for stats vs. Bases~~: Python reports for tag and property stats. Bases is saved for note lists (step 5).
 
 **Out of scope:** Idea promotion system
