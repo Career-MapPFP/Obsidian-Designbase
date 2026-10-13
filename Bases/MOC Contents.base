@@ -1,6 +1,3 @@
-# MOC Contents: embed in a MOC with ![[MOC Contents.base]] to list every note connected to it,
-# grouped by Note Type, including archived Working notes. "this" is the MOC it's embedded in.
-# Part of the Obsidian-Designbase system.
 filters:
   and:
     - file.hasLink(this.file)
@@ -24,21 +21,25 @@ views:
     groupBy:
       property: formula.type
       direction: ASC
-    sort:
-      - property: file.mtime
-        direction: DESC
     order:
       - file.name
-      - note.Parent
+      - Parent
       - formula.edited
       - file.folder
-  - type: table
-    name: Recently edited
-    limit: 10
     sort:
       - property: file.mtime
         direction: DESC
+    columnSize:
+      file.name: 452
+      note.Parent: 277
+      formula.edited: 212
+  - type: table
+    name: Recently edited
     order:
       - file.name
       - formula.type
       - formula.edited
+    sort:
+      - property: file.mtime
+        direction: DESC
+    limit: 10
