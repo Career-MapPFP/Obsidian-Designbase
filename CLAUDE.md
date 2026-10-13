@@ -13,14 +13,15 @@ This folder holds the design for how the user organizes their Obsidian vault. Re
 ## Files here
 
 - **[[Obsidian-Designbase]]** — the system itself and the source of truth. Read it before you touch notes anywhere in the vault.
-- **[[Obsidian Reference Guide - Backlog]]** — work that's planned or undecided, in priority order. The "Parked" and "Out of scope" lines are deliberate decisions.
+- **[[Obsidian Reference Guide - Backlog]]** — work that's done, planned or undecided, in order. Struck-through steps are done. The "Parked", "Decided" and "Out of scope" lines are deliberate decisions.
 - Other notes in this folder are the user's personal notes (see "Git repo" below).
 
 ## Git repo
 
 This folder is a git repo that will eventually be published on GitHub, so anyone can use it to set up a vault with this system (Note Type, CIAA, and so on).
 
-- **What's tracked:** the shareable system, meaning `Obsidian-Designbase.md`, the core templates in `Templates/` (one per Note Type), the Backlog (a public roadmap), this file, and `.gitignore`.
+- **What's tracked:** the shareable system, meaning `Obsidian-Designbase.md`, the core templates in `Templates/` (one per Note Type), `Scripts/`, `Bases/`, the `/clean-inbox` skill in `.claude/skills/`, the Backlog (a public roadmap), this file, and `.gitignore`.
+- **What moves to another vault:** the whole repo folder, not single pieces. The tools find the vault by walking up to its `.obsidian` folder, and the skill's helper reuses `Scripts/vault_scan.py`.
 - **Scripts** (`Scripts/`, tracked): `tag_report.py` and `property_report.py` write `Reports/Tag Report.md` and `Reports/Property Report.md`. They use only the Python standard library, and `vault_scan.py` holds the code both share. `Reports/` is in `.gitignore`, because a report describes one specific vault. Re-run the scripts before cleanup work so the numbers are current.
 - **Inbox cleanup** (tracked): everything is in `.claude/skills/clean-inbox/`. `SKILL.md` does the judgment, and `clean_inbox.py` does the mechanics (`context`, `apply plan.json [--preview]`, `undo`), reusing `Scripts/vault_scan.py`. Undo data is kept in `Reports/.undo/`. Vault-specific and not tracked: `Inbox Cleanup Settings.md`, one note holding the folder names and the rules learned from the user's Review answers. It's created on the first run. Routing follows the design note's Routing table. Keep the settings note out of `.claude`, because Obsidian hides dot-folders.
 - **Bases** (`Bases/`, tracked): `Vault Health.base`, `Vault Overview.base`, and `MOC Contents.base` (embedded in MOCs through the MOC template; it uses `this`, meaning the MOC it's embedded in). Keep them working in any vault: find the Inbox and Archive by name, skip `/Templates/` and `/Reports/`, and read `Note Type` with `list(note["Note Type"])` because it may be stored as a list. Obsidian rewrites a `.base` file in its own format whenever the user changes a view, and drops `#` comments. That's expected, so keep explanations in the design note instead of in comments.
@@ -48,14 +49,26 @@ The goal is to use Obsidian well **with as little admin as possible**. Organizat
 - **The user has decided:** the tags-vs-Note-Type overlap is accepted as-is ("no perfect way to describe it").
 - **`Status` is not how a note gets marked "done".** It's optional and only for long-term projects. Don't propose making it required.
 - **Don't add new properties, Note Types, or processes.** Every rule has to fit in Layer 1 or Layer 2. Check "Retired ideas" in the design note before suggesting something, because it may already have been rejected.
-- **The thing that most affects whether this works is that the Inbox gets processed.** Out-of-date templates come second, because every new note starts from one.
+- **The thing that most affects whether this works is that the Inbox gets processed.** That's `/clean-inbox`'s job, so the user doesn't have to triage by hand.
+- **Say "MOC", not "hub".** That's the user's term.
+
+## Key decisions (the design note has the full rules)
+
+- **Route by where a note belongs, not by whether it's finished.** The user never marks notes done. Working notes go to the Archive (meaning "out of the way", not "finished") and stay visible on their MOC through `Parent` and the MOC Contents embed.
+- **Every note gets a Parent.** Blank MOCs are fine: a MOC's minimum job is to collect backlinks. Exceptions: Concept MOCs and daily notes.
+- **A Concept gets its own folder only once a Reference note or sub-MOC lands under it.** Working notes never trigger a folder.
+- **The Inbox is temporary.** Unclear notes go to its Review folder with a question, and the user's answers become rules in `Inbox Cleanup Settings.md`.
+- **Never lose content.** Changing or merging content is allowed if nothing is lost. Deleted notes go to Obsidian's trash.
 
 ## Scope
 
-- The system applies to the whole `01. Career Map` vault, including the `01. Career Map` project folder. Bringing that folder into the system is backlog item 3. It was built top-down before the system existed, so it may need exceptions. Those exceptions apply only to this vault, never to the system, and they're written down in `Career Map in Obsidian.md`. Don't restructure the folder until item 3 has been planned with the user.
+- The system applies to the whole `01. Career Map` vault, including the `01. Career Map` project folder. Its folders are the user's chosen Actions. Bringing it fully into the system (MOCs for its folders, tags, Career Map–specific properties) is Backlog step 6. It may need exceptions. Those apply only to this vault, never to the system, and they're written down in `Career Map in Obsidian.md`. Don't restructure it until step 6 has been planned with the user.
 - `03. Everyday` (daily notes) stays where it is. Daily notes are `Note Type: Working` with no `Parent` (see the Daily template in `Templates/Custom/`).
-- Most of the vault was written before this system existed. Many notes have no properties or still use old ones (`Action`, `Concept`, `Reference`, `Draft`). That's expected. Fixing it is backlog item 2, so don't treat it as a design flaw.
+- The one-time property cleanup is done (2026-10-13): every note has `Note Type`, and most have `Parent`. What's left, mostly Career Map notes with no Parent or tag, shows in `Bases/Vault Health.base` and waits on step 6. A backup from before the cleanup is in `01. Obsidian Vaults/_Backups/`.
 
 ## Before you change notes
 
-Ask before moving, renaming, or bulk-editing notes. Moving or renaming files outside Obsidian can break links, because Obsidian only updates links for changes made inside the app.
+- `/clean-inbox` may move and edit Inbox notes without asking. That's its job, and it can be undone.
+- Anything else: ask before moving, renaming, or bulk-editing notes.
+- Links use note names, not folder paths, so moving a note doesn't break its links. The exception is two notes with the same name, so check for that first.
+- Keep modified dates when you edit properties in bulk (restore the file's mtime), so sorting by date in Obsidian still works.

@@ -28,9 +28,9 @@ Two Python scripts in `Scripts/` (standard library only, no AI). Run them whenev
 - The scripts are in the repo. The reports aren't, because they describe one specific vault.
 - **First run (2026-10-13):** 223 notes. 185 have no Note Type, 14 still use `Draft`, and 25 distinct properties are in use (17 of them outside the system). 31 tags, 15 of them used only once.
 
-### ~~3. Clean up properties on pre-system notes~~ ✅ Done 2026-10-13 (open questions in `99. Inbox/Review/00. Cleanup Review`)
+### ~~3. Clean up properties on pre-system notes~~ ✅ Done 2026-10-13 (its review note is archived; the open questions moved to Parked below)
 - **Result:** 184 notes updated across the whole vault (Career Map included, Everyday left as is). Every note now has `Note Type` + `Parent`, old linking properties were turned into `Parent` or a `Related:` line, and Archive was flattened. Backup: `01. Obsidian Vaults/_Backups/`.
-- **Left for step 6:** about 110 Career Map notes have no Parent, because their folders have no hub yet.
+- **Left for step 6:** about 110 Career Map notes have no Parent, because their folders have no MOC yet.
 
 **Original plan:**
 Most of the vault was written before the system existed. One catch-up pass, not perfection.
@@ -57,16 +57,18 @@ Run it whenever the Inbox needs clearing. No approvals, no marking notes done.
   - [ ] Undo on a real run. It's only been tested on a copy of the vault.
 - **Idea:** also learn from corrections. If you move a note the tool filed, or change its Parent, the next run could spot it (each run's undo record lists where every note went) and turn it into a rule.
 
-### 5. Bases: built 2026-10-13, needs checking in Obsidian
+### ~~5. Bases~~ ✅ Done 2026-10-13
 Three bases in `Bases/`, part of the system:
 - **Vault Health:** one view per kind of drift (missing Note Type / invalid Note Type / missing Parent / untagged / old properties / Inbox backlog / lonely MOCs).
-- **Vault Overview:** by Note Type, by area, hubs ranked by how many notes point to them, active in the last 30 days, Working notes going stale (90+ days, outside Archive), Reference to re-check (180+ days untouched).
-- **MOC Contents:** embedded in the MOC template, so every hub lists its connected notes (archived ones included).
+- **Vault Overview:** by Note Type, by area, MOCs ranked by how many notes point to them, active in the last 30 days, Working notes going stale (90+ days, outside Archive), Reference to re-check (180+ days untouched).
+- **MOC Contents:** embedded in the MOC template, so every MOC lists its connected notes (archived ones included).
 - [x] Vault Health checked in Obsidian: All issues shows one column per problem (140 notes, mostly Career Map waiting on step 6).
-- [ ] Check Vault Overview's views and a MOC's embedded table in Obsidian.
+- [x] Vault Overview checked in Obsidian (the Note Type views fit the system well).
+- [ ] Check a MOC's embedded table in Obsidian (e.g. Create a Website-MOC).
 - [x] MOC Contents embed added to all 18 existing MOCs (2026-10-13). `/clean-inbox` adds it to every MOC it creates.
 
-### 6. Career Map
+### 6. Career Map ← NEXT
+Do this before any more vault cleanup: most of what's left in Vault Health (Career Map notes with no Parent or tag) depends on it.
 Built with a deliberate top-down structure before the system existed (about 150 notes, 130 of them with no properties).
 - **First: check that Claude can map the full structure (the hierarchy) of Career Map accurately.** Claude needs the full list of Actions to do that.
 - Then connect it to the system. A likely approach: each Action becomes a MOC, and Career Map–specific properties (LEAP, Bucket…) go only on the Action MOCs.
@@ -74,7 +76,7 @@ Built with a deliberate top-down structure before the system existed (about 150 
 
 ---
 
-**Parked:** Status/As of Date as standard? · delete the retired `Template - Draft Note` in `999. Archive`? · `05. Record Keeping` (Admin) notes have no Parent. Fine, or give Admin a hub? · finish `Obsidian-Background`?
+**Parked:** Status/As of Date as standard? · delete the retired `Template - Draft Note` in `999. Archive`? · `05. Record Keeping` (Admin) notes have no Parent. Fine, or give Admin a MOC? · finish `Obsidian-Background`?
 
 **Decided:**
 - A Concept MOC gets its own folder only once a Reference note or sub-MOC lands under it (this settles "`Designbase.md` has no folder").

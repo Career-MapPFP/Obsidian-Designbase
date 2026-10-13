@@ -142,8 +142,8 @@ Kept in this repo so the system maintains itself with as little admin as possibl
 - **Tag and property reports** — `Scripts/tag_report.py` and `Scripts/property_report.py`. One row per tag / property, to spot drift from the system.
 - **Bases** (`Bases/`) — live views of the vault in Obsidian:
   - **Vault Health** — what needs fixing: missing Note Type or Parent, untagged notes, old properties, Inbox backlog, MOCs nothing points to.
-  - **Vault Overview** — the big picture: notes by Note Type and area, hubs ranked by size, recent activity, stale Working notes, Reference notes due for a re-check.
-  - **MOC Contents** — embedded in every MOC (it's in the MOC template). Lists every note connected to that hub, grouped by Note Type — including archived Working notes.
+  - **Vault Overview** — the big picture: notes by Note Type and area, MOCs ranked by size, recent activity, stale Working notes, Reference notes due for a re-check.
+  - **MOC Contents** — embedded in every MOC (it's in the MOC template). Lists every note connected to that MOC, grouped by Note Type — including archived Working notes.
 
 ---
 

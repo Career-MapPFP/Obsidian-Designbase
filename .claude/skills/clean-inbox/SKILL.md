@@ -19,7 +19,7 @@ python3 clean_inbox.py context > /tmp/inbox_context.json
 
 On the very first run in a vault, the script creates `Inbox Cleanup Settings.md` (in the repo folder, three levels above this file) with guessed folder names and stops. Help the user check the Folders section (Inbox, Review, Archive, Admin, Skip), then start again.
 
-The JSON has: `inbox` and `review` notes (path, word count, properties, start of the text), every `mocs` hub (name, path, Parent, start of the text), the `tags` in use, the vault's `routing_rules` (the Rules section of the settings note), `concept_folders`, and `last_run_review`. Read a note in full whenever the preview isn't enough to decide.
+The JSON has: `inbox` and `review` notes (path, word count, properties, start of the text), every MOC in `mocs` (name, path, Parent, start of the text), the `tags` in use, the vault's `routing_rules` (the Rules section of the settings note), `concept_folders`, and `last_run_review`. Read a note in full whenever the preview isn't enough to decide.
 
 ## 2. Learn from the user's Review answers
 
@@ -35,10 +35,10 @@ Apply the routing rules first. They're the user's own decisions and override you
 2. **Note Type:**
    - **Working:** thinking, not documenting. Ideas, questions, drafts, logs of a problem. This is most notes. They don't need to be finished.
    - **Reference:** the thing itself is the point, meant to be found and trusted later (a how-to, guidelines, a resource list someone maintains, a data dictionary).
-   - **MOC:** a hub whose job is to collect other notes.
+   - **MOC:** a note whose job is to collect other notes.
 3. **Parent** (required, except for a new Concept MOC):
    - Prefer an existing MOC. Strong signals: the note links to it, an old property (`Action`, `Concept`, `Project`, `Domain`, `Reference`) names it, or the topic clearly matches its name or text.
-   - **Nothing fits → create a blank MOC** in `new_mocs`. Name it after the topic in plain words (e.g. `Git`). Several notes on one theme share one new MOC. Give the new MOC a Parent if it sits under an existing hub. Otherwise it's a new Concept with no Parent, placed as a single file in the most fitting `concept_folders` folder. Never create a new top-level folder.
+   - **Nothing fits → create a blank MOC** in `new_mocs`. Name it after the topic in plain words (e.g. `Git`). Several notes on one theme share one new MOC. Give the new MOC a Parent if it sits under an existing MOC. Otherwise it's a new Concept with no Parent, placed as a single file in the most fitting `concept_folders` folder. Never create a new top-level folder.
 4. **Tag:** at least one. Reuse a tag from `tags` when one fits. CamelCase, no `/` nesting.
 5. **Destination** (Reference and MOC only. Working notes always go to the Archive, and the script handles that):
    - Follow the Parent chain up to its Concept (a MOC with no Parent). The note goes in **that Concept's folder**.
@@ -48,9 +48,11 @@ Apply the routing rules first. They're the user's own decisions and override you
 
 **New MOCs** automatically end with `![[MOC Contents.base]]` (a live list of the notes in that MOC), so don't add it to `body` yourself.
 
-**Content:** never lose content. When you create a MOC, you may fold short notes into it if they belong in the hub itself: put their full text in the MOC's `body` and list them in `merged_from` (the script then deletes them). Otherwise don't edit note text. The script only changes properties, adds a `Related:` line for links from old properties, and moves files.
+**Content:** never lose content. When you create a MOC, you may fold short notes into it if they belong in the MOC itself: put their full text in the MOC's `body` and list them in `merged_from` (the script then deletes them). Otherwise don't edit note text. The script only changes properties, adds a `Related:` line for links from old properties, and moves files.
 
-**Scope:** only notes in the Inbox and the Review folder. Never touch anything else.
+**Scope:** only notes in the Inbox and the Review folder. Never touch anything else. Daily notes and the Skip folders are never processed.
+
+**Wording:** the user calls these notes MOCs. Say "MOC" in the report and in what you tell them, not "hub".
 
 ## 4. Write the plan and apply it
 
