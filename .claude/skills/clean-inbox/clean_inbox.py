@@ -404,6 +404,12 @@ def undo(vault: Path) -> None:
     if not m or m.get("undone"):
         sys.exit("Nothing to undo.")
     snap = UNDO_DIR / m["id"]
+    # Only undo if the run's results are still where it left them; otherwise undo would create duplicates.
+    moved = [op["to"] for op in m["ops"] if op["op"] in ("move", "trash") and not (vault / op["to"]).exists()]
+    moved += [op["path"] for op in m["ops"] if op["op"] == "create" and not (vault / op["path"]).exists()]
+    if moved:
+        sys.exit(f"Can't undo run {m['id']}: {len(moved)} of its files have been moved, renamed or deleted since "
+                 f"(e.g. {moved[0]}). Undoing now would create duplicates. Fix those notes by hand instead.")
     for op in reversed(m["ops"]):
         if op["op"] in ("move", "trash"):
             src, dst = vault / op["from"], vault / op["to"]
