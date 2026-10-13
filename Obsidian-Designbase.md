@@ -111,8 +111,8 @@ Every note has exactly one Note Type.
 | `01. Career Map`    | Concept   | The Career Map project: Design, plus one folder per Outcome holding its Actions. Its fixed hierarchy and exceptions are in `Career Map in Obsidian` |
 | `02. LABs`          | Concept   | Empty for now                                                        |
 | `03. Everyday`      | Concept   | Daily notes                                                          |
-| `04. Analysis`      | Concept   | Research and general-knowledge topics (Obsidian, Designbase, Website Hosting) |
-| `05. Record Keeping`| Admin     | Attachments, data backups (templates live in `Obsidian-Designbase/Templates`) |
+| `04. Analysis`      | Concept   | Research and general-knowledge topics (Designbase, Git, …) |
+| `05. Record Keeping`| Admin     | Attachments, data backups, and this system (`Obsidian-Designbase`: templates, tools, Bases) |
 | `999. Archive`      | Archive   | Working notes, out of the way                                        |
 
 ---
