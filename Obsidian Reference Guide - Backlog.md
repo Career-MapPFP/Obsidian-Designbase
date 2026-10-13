@@ -41,19 +41,14 @@ Most of the vault was written before the system existed. One catch-up pass, not 
 - Flatten `999. Archive`: move the 10 files up out of the `Drafts` and `Working Notes` subfolders.
 - **Decide first:** MOC tag vs `Note Type: MOC`. 7 notes are tagged `MOC` but have no `Note Type`.
 
-### 4. Inbox cleanup tool
-A tool kept in the repo that the user runs about once a week to clean up `99. Inbox`.
-- **Its first real run is the current Inbox (about 25 notes)**, which finishes the cleanup and tests the tool at the same time.
-- **Weekly procedure:**
-  1. Scan every note in the Inbox.
-  2. AI proposes Note Type, tags, Parent and destination (stays in Inbox, a Concept folder, or Archive), and flags Working notes that look finished.
-  3. The user approves, edits or skips each row in one table.
-  4. Apply: set the properties and move the files. Skipped notes stay in the Inbox for next week.
-  5. Log what moved where.
-- Keyword matching in plain Python was dropped. Routing needs judgment, so AI does it.
-- **Leading option: a Claude Code skill** (`/clean-inbox`): one markdown file in the repo, included in the subscription, review step built in, and the file itself documents the procedure. Alternative: Python that calls the Claude API (needs an API key, costs per run).
-- Moving files is safe: links use note names, not folder paths. Watch for the few duplicate note names (for example, `Idea Promotion System.md`, `00. Intro.md`).
-- **Vault settings:** the tool moves files, so each vault states its folder names once (Inbox, Archive, Concept folders) in a short settings section. Nothing is hard-coded. The report scripts don't need this, because they only read the vault.
+### 4. Inbox cleanup tool (`/clean-inbox`): built 2026-10-13. First real run next.
+Run it whenever the Inbox needs clearing. No approvals, no marking notes done.
+- **The skill** (`.claude/skills/clean-inbox/`) makes the judgment calls for each note: blank? → Note Type → Parent (an existing MOC, or create a blank one) → tag → destination. Only genuinely unclear notes go to Review, with one question.
+- **The script** (`Scripts/clean_inbox.py`) applies the plan: sets properties, moves files (Working → Archive, Reference/MOC → Concept folder), creates folders only for Reference notes or sub-MOCs, deletes blank notes to Obsidian's trash, renames on name collisions, saves undo data, and writes `Reports/Inbox Cleanup Report.md`.
+- **Learning:** answer a Review question by setting the note's Parent or moving it. The next run turns your answer into a rule in `Routing Rules.md` and applies it from then on.
+- **Undo:** `/clean-inbox undo` reverses the last run. Tested on a copy of the vault: the copy came back identical.
+- **Settings:** `vault_settings.json` (folder names), so it works in any vault.
+- Decisions made along the way: route by where a note belongs, not by whether it's finished; Archive means "out of the way"; every note gets a Parent (blank MOCs are fine); a skill, not an API script, so no extra setup or cost.
 
 ### 5. Property Base
 A `.base` file in the repo for ongoing maintenance. It catches notes that drift from the system after the cleanup.
@@ -67,12 +62,10 @@ Built with a deliberate top-down structure before the system existed (about 150 
 
 ---
 
-**Open decisions**
-- Step 4: Claude Code skill or Python with the API? Should the first version ask the user to approve every note?
-
-**Parked:** Status/As of Date as standard? · `Designbase.md` has no folder · finish `Obsidian-Background`?
+**Parked:** Status/As of Date as standard? · finish `Obsidian-Background`?
 
 **Decided:**
+- A Concept MOC gets its own folder only once a Reference note or sub-MOC lands under it (this settles "`Designbase.md` has no folder").
 - Daily notes stay in `03. Everyday`, with `Note Type: Working` and no `Parent`. All 28 existing daily notes were updated on 2026-10-13.
 - ~~Step 2: Python reports for stats vs. Bases~~: Python reports for tag and property stats. Bases is saved for note lists (step 5).
 

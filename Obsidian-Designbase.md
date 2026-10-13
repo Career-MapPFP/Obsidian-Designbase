@@ -46,7 +46,7 @@ As few as possible, fixed by Note Type — never invented ad hoc per note. A vau
 | Property    | Applies to  | Definition                                                                                                                                                      |
 | ----------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `Note Type` | Every note  | Working / Reference / MOC. Single value.                                                                                                                        |
-| `Parent`    | Every note  | A single link to the nearest MOC this note belongs to. Determines the note's folder. Blank on a Concept. A note relevant elsewhere links there inline — not a second Parent. |
+| `Parent`    | Every note  | A single link to the nearest MOC this note belongs to. Determines the note's folder. Blank on a Concept and on daily notes. A note relevant elsewhere links there inline — not a second Parent. |
 | `Status`    | Incidental  | Lifecycle state, e.g. `Active`. Not yet standard — see Backlog.                                                                                                 |
 | `As of Date`| Incidental  | Date the content was last confirmed accurate. Not yet standard — see Backlog.                                                                                    |
 
@@ -65,19 +65,24 @@ Organic — happen naturally while writing, not planned.
 
 Every note has exactly one Note Type.
 
-- **Working** — you're thinking, not documenting. Expected to go stale and get archived once done.
+- **Working** — you're thinking, not documenting. Expected to go stale — no need to mark it done. The inbox cleanup files it in the Archive.
 - **Reference** — the thing itself is the point. Meant to be found again and trusted later. Maintained, not just written once.
 - **MOC** — a hub. Can be an empty stub or fully written out — what matters is that other notes point to it.
 
 ### Routing
 
-| Note Type                     | Lives in                                       |
+| Note                          | Lives in                                       |
 | ----------------------------- | ---------------------------------------------- |
-| Working (active)              | Inbox                                          |
-| Working (done)                | Archive                                        |
+| New, not yet processed        | Inbox                                          |
+| Working                       | Archive — still linked to its MOC through `Parent` |
 | Reference                     | The folder of the Concept its `Parent` chain leads to |
-| MOC, no `Parent` (a Concept)  | Its own folder, named after it                 |
+| MOC, no `Parent` (a Concept)  | A single file in a top-level folder; gets its own folder once a Reference note or sub-MOC lands under it |
 | MOC, has a `Parent` (nested)  | The folder of the Concept its `Parent` chain leads to — no folder of its own |
+| Basically blank               | Deleted                                        |
+
+- **Every note gets a `Parent`.** If nothing fits, create a blank MOC — a MOC's minimum job is to collect backlinks.
+- **To keep a Working note out of the Archive**, file it in its Concept folder yourself (e.g. an active project). Older Working notes already in Concept folders can stay there.
+- **The Inbox is temporary.** The inbox cleanup (`/clean-inbox`, see Tools) applies this table. Notes it can't place go to a Review folder in the Inbox with a question.
 
 ---
 
@@ -86,14 +91,14 @@ Every note has exactly one Note Type.
 ### CIAA — the only top-level structure
 
 - **Concepts** — every top-level folder that isn't one of the other three.
-- **Inbox** — landing folder for everything new.
-- **Archive** — finished Working notes. Global by default, local by exception (only if a Concept is big enough to want its own).
+- **Inbox** — landing folder for everything new. Temporary — emptied by the inbox cleanup.
+- **Archive** — Working notes, out of the way (not necessarily finished). Global by default, local by exception (only if a Concept is big enough to want its own).
 - **Admin** — templates, system configuration.
 
 ### MOCs and folders
 
 - **Concepts are MOC stubs.** Start minimal. Backlinks surface related content — organize only as needed.
-- **Only a Concept (a MOC with no `Parent`) gets its own folder.**
+- **Only a Concept (a MOC with no `Parent`) gets its own folder** — and only once a Reference note or sub-MOC lands under it. Until then it's a single file in a top-level folder.
 - **Hierarchy is expressed through `Parent`, not nested folders.** If "Contracts" emerges as a hub inside Disney, it's just a note with `Parent: [[Disney]]` living in the Disney folder.
 - **A note lives in the folder at the end of its `Parent` chain**, not necessarily its immediate Parent. A note under "Contracts" still lives in the Disney folder.
 - A top-level folder can be one Concept (e.g. Career Map) or a group of Concepts (e.g. Analysis holds Obsidian, Designbase, …). Either is fine — it's browsing only.
@@ -102,13 +107,13 @@ Every note has exactly one Note Type.
 
 | Folder              | CIAA role | What's in it                                                         |
 | ------------------- | --------- | -------------------------------------------------------------------- |
-| `99. Inbox`         | Inbox     | Default location for new notes                                       |
-| `01. Career Map`    | Concept   | The Career Map project. Its internal structure is the project's own business, not the vault system's |
+| `99. Inbox`         | Inbox     | Default location for new notes. Cleaned up with `/clean-inbox`       |
+| `01. Career Map`    | Concept   | The Career Map project. Its older, top-down structure is being brought into the system (see Backlog) |
 | `02. LABs`          | Concept   | Empty for now                                                        |
 | `03. Everyday`      | Concept   | Daily notes                                                          |
 | `04. Analysis`      | Concept   | Research and general-knowledge topics (Obsidian, Designbase, Website Hosting) |
 | `05. Record Keeping`| Admin     | Attachments, data backups (templates live in `Obsidian-Designbase/Templates`) |
-| `999. Archive`      | Archive   | Finished Working notes                                               |
+| `999. Archive`      | Archive   | Working notes, out of the way                                        |
 
 ---
 
@@ -118,7 +123,7 @@ Every note has exactly one Note Type.
 2. **Add a tag** — what IS this?
 3. **Set properties** — `Note Type`, and `Parent` (the nearest MOC it belongs to).
 4. **Link as you write.**
-5. **Move when ready** — per the Routing table above. MOCs skip the Inbox and are created where they live.
+5. **Let the inbox cleanup file it** — run `/clean-inbox` whenever the Inbox needs clearing, or move a note yourself per the Routing table. MOCs skip the Inbox and are created where they live.
 
 ---
 
@@ -126,6 +131,15 @@ Every note has exactly one Note Type.
 
 - **Core templates** — one per Note Type (Working, Reference, MOC), in `Templates/`. Part of the system.
 - **Custom templates** — a vault can add its own for a kind of Concept. Example: a Project MOC with `Start Date` and `Client`. They live in `Templates/Custom/` and belong to the vault, not the system.
+
+---
+
+# Tools
+
+Kept in this repo so the system maintains itself with as little admin as possible.
+
+- **`/clean-inbox`** — a Claude Code skill that empties the Inbox per the Routing table: decides each note's Note Type, Parent and tag, creates blank MOCs where needed, files everything, and writes a report. Learns from your answers to Review questions.
+- **Tag and property reports** — `Scripts/tag_report.py` and `Scripts/property_report.py`. One row per tag / property, to spot drift from the system.
 
 ---
 
