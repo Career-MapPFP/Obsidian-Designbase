@@ -112,7 +112,7 @@ Every note has exactly one Note Type.
 | `02. LABs`          | Concept   | Empty for now                                                        |
 | `03. Everyday`      | Concept   | Daily notes, all with `Parent: [[Daily Notes]]`                       |
 | `04. Analysis`      | Concept   | Research and general-knowledge topics (Designbase, Git, …) |
-| `05. Record Keeping`| Admin     | Attachments, data backups, and this system (`Obsidian-Designbase`: templates, tools, Bases) |
+| `05. Record Keeping`| Admin     | This system (`01. Obsidian-Designbase`: templates, tools, Bases), data backups, attachments |
 | `999. Archive`      | Archive   | Working notes, out of the way                                        |
 
 ---
