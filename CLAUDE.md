@@ -55,7 +55,7 @@ The goal is to use Obsidian well **with as little admin as possible**. Organizat
 ## Key decisions (the design note has the full rules)
 
 - **Route by where a note belongs, not by whether it's finished.** The user never marks notes done. Working notes go to the Archive (meaning "out of the way", not "finished") and stay visible on their MOC through `Parent` and the MOC Contents embed.
-- **Every note gets a Parent.** Blank MOCs are fine: a MOC's minimum job is to collect backlinks. Exceptions: Concept MOCs and daily notes.
+- **Every note gets a Parent.** Blank MOCs are fine: a MOC's minimum job is to collect backlinks. The only exception is Concept MOCs. Daily notes point to the Daily Notes MOC.
 - **A Concept gets its own folder only once a Reference note or sub-MOC lands under it.** Working notes never trigger a folder.
 - **The Inbox is temporary.** Unclear notes go to its Review folder with a question, and the user's answers become rules in `Inbox Cleanup Settings.md`.
 - **Never lose content.** Changing or merging content is allowed if nothing is lost. Deleted notes go to Obsidian's trash.
@@ -64,7 +64,7 @@ The goal is to use Obsidian well **with as little admin as possible**. Organizat
 
 - The system applies to the whole `01. Career Map` vault, including the `01. Career Map` project folder. That folder was converted on 2026-10-13 (Backlog step 6). **Read `Career Map in Obsidian.md` before touching it.** It sets out the fixed hierarchy (Goal → Outcomes → Buckets → Sub-Buckets → Actions, with Airtable as the source of truth), the MOC chain, the folder layout, and the Action MOC properties. Its exceptions apply to this vault only, never to the system.
 - **Outcomes are not Domains.** Outcomes come from the Career Map's backward design. Domains is a separate, later idea that lives under CM System Design (Domains-MOC). Don't merge them.
-- `03. Everyday` (daily notes) stays where it is. Daily notes are `Note Type: Working` with no `Parent` (see the Daily template in `Templates/Custom/`).
+- `03. Everyday` (daily notes) stays where it is. Daily notes are `Note Type: Working` with `Parent: [[Daily Notes]]`, a Concept MOC in that folder (see the Daily template in `Templates/Custom/`).
 - The one-time cleanups are done (2026-10-13). Almost every note has `Note Type`, `Parent` and a tag. What's left (Admin notes, retired templates) is on the Backlog's Parked list and shows in `Bases/Vault Health.base`. Backups from before each big change are in `01. Obsidian Vaults/_Backups/`.
 
 ## Before you change notes

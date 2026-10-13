@@ -46,7 +46,7 @@ As few as possible, fixed by Note Type — never invented ad hoc per note. A vau
 | Property    | Applies to  | Definition                                                                                                                                                      |
 | ----------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `Note Type` | Every note  | Working / Reference / MOC. Single value.                                                                                                                        |
-| `Parent`    | Every note  | A single link to the nearest MOC this note belongs to. Determines the note's folder. Blank on a Concept and on daily notes. A note relevant elsewhere links there inline — not a second Parent. |
+| `Parent`    | Every note  | A single link to the nearest MOC this note belongs to. Determines the note's folder. Blank on a Concept. A note relevant elsewhere links there inline — not a second Parent. |
 | `Status`    | Incidental  | Lifecycle state, e.g. `Active`. Not yet standard — see Backlog.                                                                                                 |
 | `As of Date`| Incidental  | Date the content was last confirmed accurate. Not yet standard — see Backlog.                                                                                    |
 
@@ -110,7 +110,7 @@ Every note has exactly one Note Type.
 | `99. Inbox`         | Inbox     | Default location for new notes. Cleaned up with `/clean-inbox`       |
 | `01. Career Map`    | Concept   | The Career Map project: Design, plus one folder per Outcome holding its Actions. Its fixed hierarchy and exceptions are in `Career Map in Obsidian` |
 | `02. LABs`          | Concept   | Empty for now                                                        |
-| `03. Everyday`      | Concept   | Daily notes                                                          |
+| `03. Everyday`      | Concept   | Daily notes, all with `Parent: [[Daily Notes]]`                       |
 | `04. Analysis`      | Concept   | Research and general-knowledge topics (Designbase, Git, …) |
 | `05. Record Keeping`| Admin     | Attachments, data backups, and this system (`Obsidian-Designbase`: templates, tools, Bases) |
 | `999. Archive`      | Archive   | Working notes, out of the way                                        |

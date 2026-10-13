@@ -11,7 +11,7 @@ formulas:
   created: file.ctime.relative()
   is_moc: list(note["Note Type"]).contains("MOC")
   p_type: if(note["Note Type"].isEmpty(), "No Note Type", if(list(note["Note Type"]).containsAny("Working", "Reference", "MOC"), "", "Invalid Note Type"))
-  p_parent: if(note.Parent, "", if(formula.is_moc, "", if(file.hasTag("Daily"), "", "No Parent")))
+  p_parent: if(note.Parent, "", if(formula.is_moc, "", "No Parent"))
   p_tag: if(file.tags.isEmpty(), if(formula.is_moc, "", "No tag"), "")
   p_old: if(file.hasProperty("Action"), "Old property", if(file.hasProperty("Concept"), "Old property", if(file.hasProperty("Reference"), "Old property", if(file.hasProperty("Parent MOC"), "Old property", if(file.hasProperty("Project"), "Old property", if(file.hasProperty("Domain"), "Old property", ""))))))
   p_inbox: if(file.folder.contains("Inbox"), "In Inbox", "")

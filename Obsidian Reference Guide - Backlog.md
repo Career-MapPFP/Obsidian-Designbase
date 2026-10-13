@@ -84,7 +84,7 @@ Built with a deliberate top-down structure before the system existed (about 150 
 
 **Decided:**
 - A Concept MOC gets its own folder only once a Reference note or sub-MOC lands under it (this settles "`Designbase.md` has no folder").
-- Daily notes stay in `03. Everyday`, with `Note Type: Working` and no `Parent`. All 28 existing daily notes were updated on 2026-10-13.
+- Daily notes stay in `03. Everyday`, with `Note Type: Working` and `Parent: [[Daily Notes]]` (a Concept MOC in that folder). All 28 existing daily notes and the Daily template were updated on 2026-10-13.
 - ~~Step 2: Python reports for stats vs. Bases~~: Python reports for tag and property stats. Bases is saved for note lists (step 5).
 
 **Out of scope:** Idea promotion system
