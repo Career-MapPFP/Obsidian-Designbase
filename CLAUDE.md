@@ -1,6 +1,6 @@
 ---
 tags:
-  - SOP
+  - AIContext
 Note Type:
   - Reference
 Parent: "[[Obsidian-Designbase]]"
