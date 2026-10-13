@@ -41,13 +41,14 @@ Most of the vault was written before the system existed. One catch-up pass, not 
 - Flatten `999. Archive`: move the 10 files up out of the `Drafts` and `Working Notes` subfolders.
 - **Decide first:** MOC tag vs `Note Type: MOC`. 7 notes are tagged `MOC` but have no `Note Type`.
 
-### 4. Inbox cleanup tool (`/clean-inbox`): built 2026-10-13. First real run next.
+### ~~4. Inbox cleanup tool (`/clean-inbox`)~~ ✅ Done 2026-10-13
 Run it whenever the Inbox needs clearing. No approvals, no marking notes done.
 - **The skill** (`.claude/skills/clean-inbox/`) makes the judgment calls for each note: blank? → Note Type → Parent (an existing MOC, or create a blank one) → tag → destination. Only genuinely unclear notes go to Review, with one question.
-- **The script** (`Scripts/clean_inbox.py`) applies the plan: sets properties, moves files (Working → Archive, Reference/MOC → Concept folder), creates folders only for Reference notes or sub-MOCs, deletes blank notes to Obsidian's trash, renames on name collisions, saves undo data, and writes `Reports/Inbox Cleanup Report.md`.
-- **Learning:** answer a Review question by setting the note's Parent or moving it. The next run turns your answer into a rule in `Routing Rules.md` and applies it from then on.
+- **The helper** (`clean_inbox.py`, in the same skill folder) applies the plan: sets properties, moves files (Working → Archive, Reference/MOC → Concept folder), creates folders only for Reference notes or sub-MOCs, deletes blank notes to Obsidian's trash, renames on name collisions, saves undo data, and writes `Reports/Inbox Cleanup Report.md`.
+- **Learning:** answer a Review question by setting the note's Parent or moving it. The next run turns your answer into a rule in `Inbox Cleanup Settings.md` and applies it from then on.
 - **Undo:** `/clean-inbox undo` reverses the last run. Tested on a copy of the vault: the copy came back identical.
-- **Settings:** `vault_settings.json` (folder names), so it works in any vault.
+- **Settings:** `Inbox Cleanup Settings.md`, one note per vault with the folder names and learned rules. It's created on the first run, so the tool works in any vault.
+- **First run (2026-10-13):** 17 Working notes archived, 1 Reference filed, 8 MOCs created, 3 blank notes deleted, 0 problems. The Inbox is empty apart from 2 Review notes.
 - Decisions made along the way: route by where a note belongs, not by whether it's finished; Archive means "out of the way"; every note gets a Parent (blank MOCs are fine); a skill, not an API script, so no extra setup or cost.
 
 ### 5. Property Base
@@ -62,7 +63,7 @@ Built with a deliberate top-down structure before the system existed (about 150 
 
 ---
 
-**Parked:** Status/As of Date as standard? · finish `Obsidian-Background`?
+**Parked:** Status/As of Date as standard? · delete the retired `Template - Draft Note` in `999. Archive`? · `05. Record Keeping` (Admin) notes have no Parent. Fine, or give Admin a hub? · finish `Obsidian-Background`?
 
 **Decided:**
 - A Concept MOC gets its own folder only once a Reference note or sub-MOC lands under it (this settles "`Designbase.md` has no folder").

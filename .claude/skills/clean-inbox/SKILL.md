@@ -5,21 +5,21 @@ description: Clean up the Obsidian vault's Inbox using the Obsidian-Designbase s
 
 # Clean Inbox
 
-You're the judgment half of the inbox cleanup. `Scripts/clean_inbox.py` is the mechanical half: it reads the vault, applies your plan, saves undo data and writes the report. The repo folder is three levels above this file. Run every command from there.
+You're the judgment half of the inbox cleanup. `clean_inbox.py`, in this skill's folder, is the mechanical half: it reads the vault, applies your plan, saves undo data and writes the report. In the commands below, `clean_inbox.py` means the full path to that file.
 
 The rules come from `Obsidian-Designbase.md` (Routing table). Read it if you're unsure about anything.
 
-**Arguments:** none (normal run) · `preview` (report only, change nothing) · `undo` (reverse the last run: run `python3 Scripts/clean_inbox.py undo` and stop).
+**Arguments:** none (normal run) · `preview` (report only, change nothing) · `undo` (reverse the last run: run `python3 clean_inbox.py undo` and stop).
 
 ## 1. Get the context
 
 ```
-python3 Scripts/clean_inbox.py context > /tmp/inbox_context.json
+python3 clean_inbox.py context > /tmp/inbox_context.json
 ```
 
-If it says `vault_settings.json` is missing, help the user create it from `vault_settings.example.json` (folder names for Inbox, Review, Archive, Admin, skipped folders and the Routing Rules note), then start again.
+On the very first run in a vault, the script creates `Inbox Cleanup Settings.md` (in the repo folder, three levels above this file) with guessed folder names and stops. Help the user check the Folders section (Inbox, Review, Archive, Admin, Skip), then start again.
 
-The JSON has: `inbox` and `review` notes (path, word count, properties, start of the text), every `mocs` hub (name, path, Parent, start of the text), the `tags` in use, the vault's `routing_rules`, `concept_folders`, and `last_run_review`. Read a note in full whenever the preview isn't enough to decide.
+The JSON has: `inbox` and `review` notes (path, word count, properties, start of the text), every `mocs` hub (name, path, Parent, start of the text), the `tags` in use, the vault's `routing_rules` (the Rules section of the settings note), `concept_folders`, and `last_run_review`. Read a note in full whenever the preview isn't enough to decide.
 
 ## 2. Learn from the user's Review answers
 
@@ -29,7 +29,7 @@ For each item in `last_run_review`:
 
 ## 3. Decide each Inbox note
 
-Apply the Routing Rules first. They're the user's own decisions and override your judgment. Then:
+Apply the routing rules first. They're the user's own decisions and override your judgment. Then:
 
 1. **Blank?** It's empty, only template headings, or a few words with no real idea → `"action": "trash"`. Don't assign properties.
 2. **Note Type:**
@@ -76,8 +76,8 @@ Write `/tmp/inbox_plan.json`:
 `parent` is the MOC's note name, without brackets. Then run:
 
 ```
-python3 Scripts/clean_inbox.py apply /tmp/inbox_plan.json            # normal run
-python3 Scripts/clean_inbox.py apply /tmp/inbox_plan.json --preview  # preview
+python3 clean_inbox.py apply /tmp/inbox_plan.json            # normal run
+python3 clean_inbox.py apply /tmp/inbox_plan.json --preview  # preview
 ```
 
 Use preview if the user asked for it, or if this is the first run ever (no `Reports/.undo/` folder yet).

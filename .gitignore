@@ -10,5 +10,4 @@ Reports/
 __pycache__/
 
 # Vault-specific settings and rules for /clean-inbox
-vault_settings.json
-Routing Rules.md
+Inbox Cleanup Settings.md

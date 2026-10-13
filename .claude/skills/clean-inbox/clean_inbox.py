@@ -1,13 +1,13 @@
-"""Inbox cleanup helper, used by the /clean-inbox Claude Code skill.
+"""Inbox cleanup helper for the /clean-inbox skill (SKILL.md, in this folder).
 
 The skill (AI) makes the judgment calls and writes a plan. This script handles the mechanics:
-  python3 Scripts/clean_inbox.py context              JSON snapshot for the AI: Inbox notes, MOCs, tags, rules
-  python3 Scripts/clean_inbox.py apply plan.json      carry out the plan, save undo data, write the report
-  python3 Scripts/clean_inbox.py apply plan.json --preview   write the report only, change nothing
-  python3 Scripts/clean_inbox.py undo                 reverse the last run
+  python3 clean_inbox.py context                      JSON snapshot for the AI: Inbox notes, MOCs, tags, rules
+  python3 clean_inbox.py apply plan.json              carry out the plan, save undo data, write the report
+  python3 clean_inbox.py apply plan.json --preview    write the report only, change nothing
+  python3 clean_inbox.py undo                         reverse the last run
 
-Settings come from vault_settings.json in the repo folder (copy vault_settings.example.json to start).
-Plan format: see the skill (.claude/skills/clean-inbox/SKILL.md).
+Vault-specific settings (folder names) and learned rules live in one note, "Inbox Cleanup Settings.md",
+in the repo folder. It's created on the first run.
 """
 
 import json
@@ -19,9 +19,10 @@ from collections import Counter
 from datetime import datetime
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "Scripts"))  # shared note-reading code
 from vault_scan import REPO_DIR, REPORTS_DIR, find_vault, load_notes, parse_note, table, write_report
 
-SETTINGS_FILE = REPO_DIR / "vault_settings.json"
+SETTINGS_FILE = REPO_DIR / "Inbox Cleanup Settings.md"
 UNDO_DIR = REPORTS_DIR / ".undo"
 REPORT = REPORTS_DIR / "Inbox Cleanup Report.md"
 NOTE_TYPES = {"Working", "Reference", "MOC"}
@@ -31,15 +32,61 @@ OLD_LINK_PROPS = {"Action", "Concept", "Reference", "Parent MOC", "Project", "Do
 
 # --- Setup ----------------------------------------------------------------------
 
+SETTING_KEYS = {"Inbox": "inbox", "Review": "review", "Archive": "archive", "Admin": "admin", "Skip": "skip"}
+
+
 def load_settings(vault: Path) -> dict:
+    """Read the "## Folders" section of the settings note (lines like "- Inbox: 99. Inbox")."""
     if not SETTINGS_FILE.exists():
-        sys.exit(f"Missing {SETTINGS_FILE.name}. Copy vault_settings.example.json to vault_settings.json "
-                 "and set your folder names.")
-    s = json.loads(SETTINGS_FILE.read_text())
+        guess = lambda word, default: next((p.name for p in sorted(vault.iterdir())
+                                            if p.is_dir() and word in p.name.lower()), default)
+        inbox = guess("inbox", "Inbox")
+        SETTINGS_FILE.write_text(SETTINGS_TEMPLATE.format(inbox=inbox, archive=guess("archive", "Archive")),
+                                 encoding="utf-8")
+        sys.exit(f"Created {SETTINGS_FILE.name} with guessed folder names. Check them, then run again.")
+    text = SETTINGS_FILE.read_text(encoding="utf-8")
+    folders = re.search(r"^## Folders\s*$(.*?)(?=^## |\Z)", text, re.S | re.M)
+    s = {"admin": [], "skip": []}
+    for key, value in re.findall(r"^\s*-\s*(\w+):[ \t]*(.*)$", folders.group(1) if folders else "", re.M):
+        if key in SETTING_KEYS:
+            k = SETTING_KEYS[key]
+            s[k] = [v.strip() for v in value.split(",") if v.strip()] if k in ("admin", "skip") else value.strip()
     for key in ("inbox", "review", "archive"):
-        if not (vault / s[key]).is_dir() and key != "review":
-            sys.exit(f"Setting '{key}' points to a folder that doesn't exist: {s[key]}")
+        if not s.get(key):
+            sys.exit(f"{SETTINGS_FILE.name} is missing the '{key.title()}' folder.")
+    for key in ("inbox", "archive"):
+        if not (vault / s[key]).is_dir():
+            sys.exit(f"{SETTINGS_FILE.name}: the {key.title()} folder doesn't exist: {s[key]}")
     return s
+
+
+SETTINGS_TEMPLATE = """---
+tags:
+  - SOP
+Note Type:
+  - Reference
+Parent: "[[Obsidian-Designbase]]"
+---
+
+# Inbox Cleanup Settings
+
+Settings and learned rules for `/clean-inbox` in this vault. Edit freely.
+
+## Folders
+
+Folder paths are relative to the vault. Admin and Skip take a comma-separated list.
+
+- Inbox: {inbox}
+- Review: {inbox}/Review
+- Archive: {archive}
+- Admin:
+- Skip:
+
+## Rules
+
+How to file notes in this vault, in plain English, one per line. The skill adds a rule each time you
+answer a Review question, and applies these before its own judgment. Edit or delete any rule.
+"""
 
 
 def words(text: str) -> int:
@@ -66,13 +113,12 @@ def context(vault: Path, s: dict) -> dict:
     mocs = [{"name": n.path.stem, "path": n.path.as_posix(), "parent": (n.props or {}).get("Parent"),
              "text": preview(n.body, 300)} for n in notes if n.note_type == "MOC"]
     in_inbox = [n for n in notes if (vault / n.path).is_relative_to(inbox)]
-    rules = vault / s["routing_rules"]
     return {
         "vault": vault.name,
         "settings": s,
         "concept_folders": sorted(p.name for p in vault.iterdir()
                                   if p.is_dir() and not p.name.startswith(".") and p.name not in special),
-        "routing_rules": rules.read_text(encoding="utf-8") if rules.exists() else "",
+        "routing_rules": SETTINGS_FILE.read_text(encoding="utf-8").split("## Rules", 1)[-1].strip(),
         "mocs": mocs,
         "tags": dict(tags.most_common()),
         "inbox": [describe(n, 800) for n in in_inbox if not (vault / n.path).is_relative_to(review)],
@@ -213,7 +259,7 @@ def moc_text(m: dict) -> str:
 
 def apply(vault: Path, s: dict, plan: dict, preview_only: bool) -> None:
     run = Run(vault, preview_only)
-    inbox, archive, trash = vault / s["inbox"], vault / s["archive"], vault / s.get("trash", ".trash")
+    inbox, archive, trash = vault / s["inbox"], vault / s["archive"], vault / ".trash"  # Obsidian's trash
     results = {k: [] for k in ("trash", "Working", "Reference", "MOC", "review", "left", "moved_mocs", "new_mocs", "errors")}
 
     def safe(path_str: str) -> Path | None:
@@ -288,7 +334,7 @@ def apply(vault: Path, s: dict, plan: dict, preview_only: bool) -> None:
     rules = [r for r in plan.get("rules_learned", []) if r.strip()]
     if not preview_only:
         if rules:
-            add_rules(vault / s["routing_rules"], rules, run.id)
+            add_rules(rules, run.id)
         manifest = {"id": run.id, "ops": run.ops, "rules_learned": rules,
                     "review": [{"path": n["_review_path"], "question": n.get("question", "")}
                                for n in plan.get("notes", []) if "_review_path" in n]}
@@ -297,28 +343,10 @@ def apply(vault: Path, s: dict, plan: dict, preview_only: bool) -> None:
     write_report(REPORT, "Inbox Cleanup Report", vault, report_body(run, results, rules, plan, preview_only))
 
 
-def add_rules(path: Path, rules: list[str], run_id: str) -> None:
-    if not path.exists():
-        path.write_text(RULES_TEMPLATE, encoding="utf-8")
-    text = path.read_text(encoding="utf-8").rstrip("\n")
-    path.write_text(text + "\n" + "".join(f"- {r} *(learned {run_id[:10]})*\n" for r in rules), encoding="utf-8")
-
-
-RULES_TEMPLATE = """---
-tags:
-  - SOP
-Note Type:
-  - Reference
-Parent: "[[Obsidian-Designbase]]"
----
-
-# Routing Rules
-
-How `/clean-inbox` should file notes in this vault. Plain English, one rule per line.
-The skill adds a rule each time you answer a Review question. Edit or delete any rule freely.
-
-## Rules
-"""
+def add_rules(rules: list[str], run_id: str) -> None:
+    """Append rules to the end of the settings note (the Rules section is last)."""
+    text = SETTINGS_FILE.read_text(encoding="utf-8").rstrip("\n")
+    SETTINGS_FILE.write_text(text + "\n" + "".join(f"- {r} *(learned {run_id[:10]})*\n" for r in rules), encoding="utf-8")
 
 
 def report_body(run: Run, r: dict, rules: list[str], plan: dict, preview_only: bool) -> list[str]:
@@ -326,7 +354,7 @@ def report_body(run: Run, r: dict, rules: list[str], plan: dict, preview_only: b
     if preview_only:
         lines += ["> [!warning] PREVIEW: nothing has been changed. This is what the cleanup would do.", ""]
     else:
-        lines += [f"Run `{run.id}`. To reverse it: `python3 Scripts/clean_inbox.py undo`", ""]
+        lines += [f"Run `{run.id}`. To reverse it: `/clean-inbox undo`", ""]
     folders = [o["path"] for o in run.ops if o["op"] == "folder"]
     lines += ["## Summary", "",
               f"- **Blank notes deleted** (to Obsidian's trash): {len(r['trash'])}",
@@ -389,7 +417,7 @@ def undo(vault: Path) -> None:
                 folder.rmdir()
     m["undone"] = True
     (snap / "manifest.json").write_text(json.dumps(m, indent=2))
-    note = " Rules it learned are still in Routing Rules; delete them there if needed." if m.get("rules_learned") else ""
+    note = f" Rules it learned are still in {SETTINGS_FILE.name}; delete them there if needed." if m.get("rules_learned") else ""
     print(f"Undid run {m['id']}: {len(m['ops'])} changes reversed.{note}")
 
 

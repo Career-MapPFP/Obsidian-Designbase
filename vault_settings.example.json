@@ -1,9 +1,0 @@
-{
-  "inbox": "99. Inbox",
-  "review": "99. Inbox/Review",
-  "archive": "999. Archive",
-  "admin": ["05. Record Keeping"],
-  "skip": ["03. Everyday"],
-  "trash": ".trash",
-  "routing_rules": "04. Analysis/Obsidian-Designbase/Routing Rules.md"
-}
