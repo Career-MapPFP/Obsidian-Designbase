@@ -4,3 +4,7 @@ Obsidian vs Notion.md
 
 # Vault-specific templates — not part of the system
 Templates/Custom/
+
+# Generated reports describe one specific vault
+Reports/
+__pycache__/

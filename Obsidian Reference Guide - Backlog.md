@@ -20,12 +20,13 @@ One step at a time, in this order. Each step makes the next one easier.
 - Custom templates (`Templates/Custom/`, left out of the repo): Daily (unchanged), plus `MOC CM` and `MOC Analysis` kept as-is as placeholders until step 6 decides on Career Map's customizations.
 - Old Working and Reference templates deleted (replaced). The retired Draft template moved to `999. Archive`.
 
-### 2. Tag report
-Each tag is one row, with stats: how many notes use it, which folders, which Note Types, and first and last used.
-- **Python script, no AI.** It writes a `Tag Report.md` that you read in Obsidian.
-- Why not Bases: every row in Bases is a note, so it can't make each tag a row.
-- Lives in this repo, as part of the system's maintenance tools.
-- It shows how tags are actually used, which step 3 needs before merging tags.
+### 2. Tag and property reports ✅ (2026-10-13)
+Two Python scripts in `Scripts/` (standard library only, no AI). Run them whenever you want an up-to-date picture of the vault.
+- `python3 Scripts/tag_report.py` writes `Reports/Tag Report.md`. One row per tag: how many notes, used in properties vs. inline, Note Types, folders, last edited. It also flags the same tag spelled differently, nested tags, and tags used in only one note.
+- `python3 Scripts/property_report.py` writes `Reports/Property Report.md`. One row per property: kind (system / Obsidian built-in / other), how many notes have it and how many fill it in, value types, common values, folders. It also has a system check (missing Note Type, invalid Note Types, missing Parent) and flags properties that are always empty.
+- Why not Bases: every row in Bases is a note, so it can't make each tag or property a row.
+- The scripts are in the repo. The reports aren't, because they describe one specific vault.
+- **First run (2026-10-13):** 223 notes. 185 have no Note Type, 14 still use `Draft`, and 25 distinct properties are in use (17 of them outside the system). 31 tags, 15 of them used only once.
 
 ### 3. Clean up properties on pre-system notes
 Most of the vault was written before the system existed. One catch-up pass, not perfection.
