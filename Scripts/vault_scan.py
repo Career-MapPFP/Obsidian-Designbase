@@ -13,8 +13,7 @@ from pathlib import Path
 REPO_DIR = Path(__file__).resolve().parent.parent
 REPORTS_DIR = REPO_DIR / "Reports"
 
-# Never scanned: Obsidian/system folders, the templates, and the reports themselves.
-SKIP_DIR_NAMES = {".obsidian", ".trash", ".git"}
+# Never scanned: hidden folders (Obsidian ignores them too), the templates, and the reports themselves.
 SKIP_DIRS = {REPO_DIR / "Templates", REPORTS_DIR}
 
 # Matches an inline #tag. A tag must contain at least one non-digit (Obsidian rule).
@@ -78,7 +77,7 @@ def find_vault(start: Path | None) -> Path:
 def load_notes(vault: Path) -> list[Note]:
     notes = []
     for path in sorted(vault.rglob("*.md")):
-        if any(part in SKIP_DIR_NAMES for part in path.parts) or any(path.is_relative_to(d) for d in SKIP_DIRS):
+        if any(part.startswith(".") for part in path.relative_to(vault).parts) or any(path.is_relative_to(d) for d in SKIP_DIRS):
             continue
         props, body = parse_note(path.read_text(encoding="utf-8", errors="replace"))
         modified = datetime.fromtimestamp(path.stat().st_mtime).date()

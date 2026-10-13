@@ -1,3 +1,7 @@
+# Vault Health: notes that don't follow the system yet.
+# "All issues" lists every note with a problem; each problem has its own column.
+# The other views show one kind of problem at a time. An empty view means nothing to fix.
+# Part of the Obsidian-Designbase system.
 filters:
   and:
     - file.ext == "md"
@@ -9,14 +13,26 @@ formulas:
   area: file.path.split("/").slice(0, 1).join("")
   edited: file.mtime.relative()
   created: file.ctime.relative()
-  issues: >-
-    if(note["Note Type"].isEmpty(), "No Note Type · ", "")
-    + if(note["Note Type"].isEmpty(), "", if(list(note["Note Type"]).containsAny("Working", "Reference", "MOC"), "", "Invalid Note Type · "))
-    + if(note.Parent.isEmpty(), if(list(note["Note Type"]).contains("MOC"), "", if(file.hasTag("Daily"), "", "No Parent · ")), "")
-    + if(file.tags.isEmpty(), if(list(note["Note Type"]).contains("MOC"), "", "No tag · "), "")
-    + if(file.hasProperty("Action"), "Old property · ", if(file.hasProperty("Concept"), "Old property · ", if(file.hasProperty("Reference"), "Old property · ", if(file.hasProperty("Parent MOC"), "Old property · ", if(file.hasProperty("Project"), "Old property · ", if(file.hasProperty("Domain"), "Old property · ", "")))))))
-    + if(file.folder.contains("Inbox"), "Still in the Inbox (run /clean-inbox) · ", "")
-    + if(list(note["Note Type"]).contains("MOC"), if(file.backlinks.isEmpty(), "No notes point to this MOC · ", ""), "")
+  is_moc: list(note["Note Type"]).contains("MOC")
+  # One formula per check. Each shows a short label, or nothing when the note is fine.
+  p_type: >-
+    if(note["Note Type"].isEmpty(), "No Note Type",
+    if(list(note["Note Type"]).containsAny("Working", "Reference", "MOC"), "", "Invalid Note Type"))
+  p_parent: >-
+    if(note.Parent, "", if(formula.is_moc, "", if(file.hasTag("Daily"), "", "No Parent")))
+  p_tag: >-
+    if(file.tags.isEmpty(), if(formula.is_moc, "", "No tag"), "")
+  p_old: >-
+    if(file.hasProperty("Action"), "Old property",
+    if(file.hasProperty("Concept"), "Old property",
+    if(file.hasProperty("Reference"), "Old property",
+    if(file.hasProperty("Parent MOC"), "Old property",
+    if(file.hasProperty("Project"), "Old property",
+    if(file.hasProperty("Domain"), "Old property", ""))))))
+  p_inbox: >-
+    if(file.folder.contains("Inbox"), "In Inbox", "")
+  p_lonely: >-
+    if(formula.is_moc, if(file.backlinks.isEmpty(), "Nothing points here", ""), "")
 properties:
   formula.type:
     displayName: Note Type
@@ -26,29 +42,48 @@ properties:
     displayName: Last edited
   formula.created:
     displayName: Created
-  formula.issues:
-    displayName: Problem
+  formula.p_type:
+    displayName: Note Type?
+  formula.p_parent:
+    displayName: Parent?
+  formula.p_tag:
+    displayName: Tag?
+  formula.p_old:
+    displayName: Old props?
+  formula.p_inbox:
+    displayName: Inbox?
+  formula.p_lonely:
+    displayName: Lonely MOC?
   file.folder:
     displayName: Folder
 views:
   - type: table
     name: All issues
     filters:
-      and:
-        - formula.issues != ""
+      or:
+        - formula.p_type == "No Note Type"
+        - formula.p_type == "Invalid Note Type"
+        - formula.p_parent == "No Parent"
+        - formula.p_tag == "No tag"
+        - formula.p_old == "Old property"
+        - formula.p_inbox == "In Inbox"
+        - formula.p_lonely == "Nothing points here"
     groupBy:
       property: formula.area
       direction: ASC
     order:
       - file.name
-      - formula.issues
-      - formula.type
-      - file.folder
+      - formula.p_type
+      - formula.p_parent
+      - formula.p_tag
+      - formula.p_old
+      - formula.p_inbox
+      - formula.p_lonely
   - type: table
     name: Missing Note Type
     filters:
       and:
-        - note["Note Type"].isEmpty()
+        - formula.p_type == "No Note Type"
     groupBy:
       property: formula.area
       direction: ASC
@@ -56,19 +91,11 @@ views:
       - file.name
       - file.folder
       - formula.edited
-    sort:
-      - property: file.name
-        direction: ASC
-    columnSize:
-      file.name: 331
   - type: table
     name: Invalid Note Type
     filters:
       and:
-        - not:
-            - note["Note Type"].isEmpty()
-        - not:
-            - list(note["Note Type"]).containsAny("Working", "Reference", "MOC")
+        - formula.p_type == "Invalid Note Type"
     order:
       - file.name
       - formula.type
@@ -77,10 +104,7 @@ views:
     name: Missing Parent
     filters:
       and:
-        - note.Parent.isEmpty()
-        - not:
-            - list(note["Note Type"]).contains("MOC")
-            - file.hasTag("Daily")
+        - formula.p_parent == "No Parent"
     groupBy:
       property: formula.area
       direction: ASC
@@ -92,9 +116,7 @@ views:
     name: Untagged
     filters:
       and:
-        - file.tags.isEmpty()
-        - not:
-            - list(note["Note Type"]).contains("MOC")
+        - formula.p_tag == "No tag"
     groupBy:
       property: formula.area
       direction: ASC
@@ -105,14 +127,8 @@ views:
   - type: table
     name: Old properties
     filters:
-      or:
-        - file.hasProperty("Action")
-        - file.hasProperty("Concept")
-        - file.hasProperty("Reference")
-        - file.hasProperty("Parent MOC")
-        - file.hasProperty("Project")
-        - file.hasProperty("Domain")
-        - file.hasProperty("Analysis")
+      and:
+        - formula.p_old == "Old property"
     order:
       - file.name
       - formula.type
@@ -121,22 +137,21 @@ views:
     name: Inbox backlog
     filters:
       and:
-        - file.folder.contains("Inbox")
+        - formula.p_inbox == "In Inbox"
+    sort:
+      - property: file.ctime
+        direction: ASC
     order:
       - file.name
       - file.folder
       - formula.created
       - formula.edited
-    sort:
-      - property: file.ctime
-        direction: ASC
   - type: table
     name: Lonely MOCs
     filters:
       and:
-        - list(note["Note Type"]).contains("MOC")
-        - file.backlinks.isEmpty()
+        - formula.p_lonely == "Nothing points here"
     order:
       - file.name
-      - Parent
+      - note.Parent
       - file.folder
