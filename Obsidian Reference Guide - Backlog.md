@@ -67,8 +67,12 @@ Three bases in `Bases/`, part of the system:
 - [ ] Check a MOC's embedded table in Obsidian (e.g. Create a Website-MOC).
 - [x] MOC Contents embed added to all 18 existing MOCs (2026-10-13). `/clean-inbox` adds it to every MOC it creates.
 
-### 6. Career Map ← NEXT
-Do this before any more vault cleanup: most of what's left in Vault Health (Career Map notes with no Parent or tag) depends on it.
+### ~~6. Career Map~~ ✅ Done 2026-10-13
+- **Result:** the Career Map folder was restructured: `00. Design` plus one folder per Outcome (Technical / Communication / Leadership / Consulting), each holding its Actions. The LEAP folders are gone, because LEAP is a property now.
+- **MOCs:** a new Career Map MOC, 4 Outcome MOCs, and 15 Action MOCs with Airtable properties (Action ID, Bucket, Sub-Bucket, LEAP, Semester, Resource Type). Every Career Map note has `Note Type`, `Parent` and a tag (124 notes tagged).
+- **Moved in:** Journalling → Develop Daily Reflection-MOC; ConfusionWarfare → Confusion Warfare-MOC (an Action); Website Hosting → under Create a Website. Domains-MOC was created under CM System Design, with Non-Profit beneath it. The two Review duplicates were archived with their active version's Parent.
+- **Checked:** no broken links (folder-path links rewritten), and every note's text matches the pre-change backup (`_Backups/career-map-vault-pre-step6-…`). The rules are written down in `Career Map in Obsidian.md`.
+- [ ] Look it over in Obsidian: the Career Map MOC, an Outcome MOC's table, and an Action MOC's properties.
 Built with a deliberate top-down structure before the system existed (about 150 notes, 130 of them with no properties).
 - **First: check that Claude can map the full structure (the hierarchy) of Career Map accurately.** Claude needs the full list of Actions to do that.
 - Then connect it to the system. A likely approach: each Action becomes a MOC, and Career Map–specific properties (LEAP, Bucket…) go only on the Action MOCs.

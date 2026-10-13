@@ -108,7 +108,7 @@ Every note has exactly one Note Type.
 | Folder              | CIAA role | What's in it                                                         |
 | ------------------- | --------- | -------------------------------------------------------------------- |
 | `99. Inbox`         | Inbox     | Default location for new notes. Cleaned up with `/clean-inbox`       |
-| `01. Career Map`    | Concept   | The Career Map project. Its older, top-down structure is being brought into the system (see Backlog) |
+| `01. Career Map`    | Concept   | The Career Map project: Design, plus one folder per Outcome holding its Actions. Its fixed hierarchy and exceptions are in `Career Map in Obsidian` |
 | `02. LABs`          | Concept   | Empty for now                                                        |
 | `03. Everyday`      | Concept   | Daily notes                                                          |
 | `04. Analysis`      | Concept   | Research and general-knowledge topics (Obsidian, Designbase, Website Hosting) |

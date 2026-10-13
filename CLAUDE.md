@@ -62,9 +62,10 @@ The goal is to use Obsidian well **with as little admin as possible**. Organizat
 
 ## Scope
 
-- The system applies to the whole `01. Career Map` vault, including the `01. Career Map` project folder. Its folders are the user's chosen Actions. Bringing it fully into the system (MOCs for its folders, tags, Career Map–specific properties) is Backlog step 6. It may need exceptions. Those apply only to this vault, never to the system, and they're written down in `Career Map in Obsidian.md`. Don't restructure it until step 6 has been planned with the user.
+- The system applies to the whole `01. Career Map` vault, including the `01. Career Map` project folder. That folder was converted on 2026-10-13 (Backlog step 6). **Read `Career Map in Obsidian.md` before touching it.** It sets out the fixed hierarchy (Goal → Outcomes → Buckets → Sub-Buckets → Actions, with Airtable as the source of truth), the MOC chain, the folder layout, and the Action MOC properties. Its exceptions apply to this vault only, never to the system.
+- **Outcomes are not Domains.** Outcomes come from the Career Map's backward design. Domains is a separate, later idea that lives under CM System Design (Domains-MOC). Don't merge them.
 - `03. Everyday` (daily notes) stays where it is. Daily notes are `Note Type: Working` with no `Parent` (see the Daily template in `Templates/Custom/`).
-- The one-time property cleanup is done (2026-10-13): every note has `Note Type`, and most have `Parent`. What's left, mostly Career Map notes with no Parent or tag, shows in `Bases/Vault Health.base` and waits on step 6. A backup from before the cleanup is in `01. Obsidian Vaults/_Backups/`.
+- The one-time cleanups are done (2026-10-13). Almost every note has `Note Type`, `Parent` and a tag. What's left (Admin notes, retired templates) is on the Backlog's Parked list and shows in `Bases/Vault Health.base`. Backups from before each big change are in `01. Obsidian Vaults/_Backups/`.
 
 ## Before you change notes
 
