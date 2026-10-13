@@ -155,11 +155,11 @@ Kept in this repo so the system maintains itself with as little admin as possibl
 
 # Appendix
 
-### Where this comes from
-A synthesis, not something novel — worth knowing so you can borrow from any of them instead of reinventing:
-- **Zettelkasten** — Working / Reference / MOC = fleeting / permanent / structure notes.
-- **LYT (Nick Milo)** — MOCs, and "start as a stub, grow only as needed."
-- **PARA** — CIAA is a compressed PARA.
+### Similar systems
+Other methods with related ideas:
+- **Zettelkasten** — its fleeting / permanent / structure notes are close to Working / Reference / MOC.
+- **LYT (Nick Milo)** — also uses MOCs, and also starts them as stubs that grow only as needed.
+- **PARA** — its four categories are similar to CIAA.
 
 ### Retired ideas (from earlier versions — don't reintroduce without a reason)
 - **Draft as a 4th Note Type** — folded into Working. Ideas, thoughts, questions are just Working notes with a tag.

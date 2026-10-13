@@ -62,6 +62,9 @@ views:
       - formula.p_old
       - formula.p_inbox
       - formula.p_lonely
+    columnSize:
+      file.name: 215
+      formula.p_type: 218
   - type: table
     name: Missing Note Type
     filters:
