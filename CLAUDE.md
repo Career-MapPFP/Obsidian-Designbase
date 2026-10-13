@@ -26,6 +26,14 @@ This folder is a git repo that will eventually be published on GitHub, so anyone
 - **Before publishing:** the "Folders In This Vault" section of the design note describes the user's specific vault. Consider labeling it as an example for a public audience.
 - **Writing style:** keep the design note as simple and clear as possible. Prefer plain wording over clever wording.
 
+## These are shared working files
+
+The user and Claude both edit these files. The user often changes them directly without saying so. That's expected, and those edits are deliberate.
+
+- **The file as it is now is the current version.** If it differs from what you wrote earlier, the user changed it on purpose. Don't treat it as a mistake.
+- **Re-read a file before editing it.** Change only what you were asked to change, and never rewrite a file from memory or overwrite the user's wording.
+- **If something looks accidental, ask.** Don't fix it yourself.
+
 ## What this system is for
 
 The goal is to use Obsidian well **with as little admin as possible**. Organization comes from links and properties, not folders. Folders are only for browsing. The system is deliberately small: 4 native features with one job each, plus 1 invented property (`Note Type`).
