@@ -1,0 +1,44 @@
+# MOC Contents: embed in a MOC with ![[MOC Contents.base]] to list every note connected to it,
+# grouped by Note Type, including archived Working notes. "this" is the MOC it's embedded in.
+# Part of the Obsidian-Designbase system.
+filters:
+  and:
+    - file.hasLink(this.file)
+    - file.path != this.file.path
+    - not:
+        - file.path.contains("/Templates/")
+        - file.path.contains("/Reports/")
+formulas:
+  type: list(note["Note Type"]).join(", ")
+  edited: file.mtime.relative()
+properties:
+  formula.type:
+    displayName: Note Type
+  formula.edited:
+    displayName: Last edited
+  file.folder:
+    displayName: Folder
+views:
+  - type: table
+    name: Notes here
+    groupBy:
+      property: formula.type
+      direction: ASC
+    sort:
+      - property: file.mtime
+        direction: DESC
+    order:
+      - file.name
+      - note.Parent
+      - formula.edited
+      - file.folder
+  - type: table
+    name: Recently edited
+    limit: 10
+    sort:
+      - property: file.mtime
+        direction: DESC
+    order:
+      - file.name
+      - formula.type
+      - formula.edited

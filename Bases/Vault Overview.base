@@ -1,0 +1,115 @@
+# Vault Overview: a bird's-eye view of the vault, for spotting trends.
+# Part of the Obsidian-Designbase system.
+filters:
+  and:
+    - file.ext == "md"
+    - not:
+        - file.path.contains("/Templates/")
+        - file.path.contains("/Reports/")
+formulas:
+  type: list(note["Note Type"]).join(", ")
+  area: file.path.split("/").slice(0, 1).join("")
+  edited: file.mtime.relative()
+  notes_pointing_here: file.backlinks.length
+properties:
+  formula.type:
+    displayName: Note Type
+  formula.area:
+    displayName: Area
+  formula.edited:
+    displayName: Last edited
+  formula.notes_pointing_here:
+    displayName: Notes pointing here
+  file.folder:
+    displayName: Folder
+views:
+  - type: table
+    name: By Note Type
+    groupBy:
+      property: formula.type
+      direction: ASC
+    sort:
+      - property: file.mtime
+        direction: DESC
+    order:
+      - file.name
+      - formula.area
+      - note.Parent
+      - formula.edited
+  - type: table
+    name: By area
+    groupBy:
+      property: formula.area
+      direction: ASC
+    sort:
+      - property: file.mtime
+        direction: DESC
+    order:
+      - file.name
+      - formula.type
+      - note.Parent
+      - formula.edited
+  - type: table
+    name: Hubs
+    filters:
+      and:
+        - list(note["Note Type"]).contains("MOC")
+    sort:
+      - property: formula.notes_pointing_here
+        direction: DESC
+    order:
+      - file.name
+      - formula.notes_pointing_here
+      - note.Parent
+      - file.folder
+      - formula.edited
+  - type: table
+    name: Active (last 30 days)
+    filters:
+      and:
+        - file.mtime > now() - "30d"
+        - not:
+            - file.hasTag("Daily")
+    sort:
+      - property: file.mtime
+        direction: DESC
+    order:
+      - file.name
+      - formula.type
+      - note.Parent
+      - formula.edited
+  - type: table
+    name: Working notes going stale
+    filters:
+      and:
+        - list(note["Note Type"]).contains("Working")
+        - file.mtime < now() - "90d"
+        - not:
+            - file.folder.contains("Archive")
+            - file.folder.contains("Inbox")
+            - file.hasTag("Daily")
+    groupBy:
+      property: formula.area
+      direction: ASC
+    sort:
+      - property: file.mtime
+        direction: ASC
+    order:
+      - file.name
+      - note.Parent
+      - file.folder
+      - formula.edited
+  - type: table
+    name: Reference to re-check
+    filters:
+      and:
+        - list(note["Note Type"]).contains("Reference")
+        - file.mtime < now() - "180d"
+    sort:
+      - property: file.mtime
+        direction: ASC
+    order:
+      - file.name
+      - note.Parent
+      - file.folder
+      - formula.edited

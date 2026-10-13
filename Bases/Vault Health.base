@@ -1,0 +1,116 @@
+# Vault Health: notes that don't follow the system yet. Each view is one kind of problem.
+# An empty view means nothing to fix. Part of the Obsidian-Designbase system.
+filters:
+  and:
+    - file.ext == "md"
+    - not:
+        - file.path.contains("/Templates/")
+        - file.path.contains("/Reports/")
+formulas:
+  type: list(note["Note Type"]).join(", ")
+  area: file.path.split("/").slice(0, 1).join("")
+  edited: file.mtime.relative()
+  created: file.ctime.relative()
+properties:
+  formula.type:
+    displayName: Note Type
+  formula.area:
+    displayName: Area
+  formula.edited:
+    displayName: Last edited
+  formula.created:
+    displayName: Created
+  file.folder:
+    displayName: Folder
+views:
+  - type: table
+    name: Missing Note Type
+    filters:
+      and:
+        - note["Note Type"].isEmpty()
+    groupBy:
+      property: formula.area
+      direction: ASC
+    order:
+      - file.name
+      - file.folder
+      - formula.edited
+  - type: table
+    name: Invalid Note Type
+    filters:
+      and:
+        - not:
+            - note["Note Type"].isEmpty()
+        - not:
+            - list(note["Note Type"]).containsAny("Working", "Reference", "MOC")
+    order:
+      - file.name
+      - formula.type
+      - file.folder
+  - type: table
+    name: Missing Parent
+    filters:
+      and:
+        - note.Parent.isEmpty()
+        - not:
+            - list(note["Note Type"]).contains("MOC")
+            - file.hasTag("Daily")
+    groupBy:
+      property: formula.area
+      direction: ASC
+    order:
+      - file.name
+      - formula.type
+      - file.folder
+  - type: table
+    name: Untagged
+    filters:
+      and:
+        - file.tags.isEmpty()
+        - not:
+            - list(note["Note Type"]).contains("MOC")
+    groupBy:
+      property: formula.area
+      direction: ASC
+    order:
+      - file.name
+      - formula.type
+      - file.folder
+  - type: table
+    name: Old properties
+    filters:
+      or:
+        - file.hasProperty("Action")
+        - file.hasProperty("Concept")
+        - file.hasProperty("Reference")
+        - file.hasProperty("Parent MOC")
+        - file.hasProperty("Project")
+        - file.hasProperty("Domain")
+        - file.hasProperty("Analysis")
+    order:
+      - file.name
+      - formula.type
+      - file.folder
+  - type: table
+    name: Inbox backlog
+    filters:
+      and:
+        - file.folder.contains("Inbox")
+    sort:
+      - property: file.ctime
+        direction: ASC
+    order:
+      - file.name
+      - file.folder
+      - formula.created
+      - formula.edited
+  - type: table
+    name: Lonely MOCs
+    filters:
+      and:
+        - list(note["Note Type"]).contains("MOC")
+        - file.backlinks.isEmpty()
+    order:
+      - file.name
+      - note.Parent
+      - file.folder

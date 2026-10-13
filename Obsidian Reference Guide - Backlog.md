@@ -57,9 +57,13 @@ Run it whenever the Inbox needs clearing. No approvals, no marking notes done.
   - [ ] Undo on a real run. It's only been tested on a copy of the vault.
 - **Idea:** also learn from corrections. If you move a note the tool filed, or change its Parent, the next run could spot it (each run's undo record lists where every note went) and turn it into a rule.
 
-### 5. Property Base
-A `.base` file in the repo for ongoing maintenance. It catches notes that drift from the system after the cleanup.
-- Rows are notes. Saved views for: missing Note Type, missing Parent, old properties, retired `Draft` type.
+### 5. Bases: built 2026-10-13, needs checking in Obsidian
+Three bases in `Bases/`, part of the system:
+- **Vault Health:** one view per kind of drift (missing Note Type / invalid Note Type / missing Parent / untagged / old properties / Inbox backlog / lonely MOCs).
+- **Vault Overview:** by Note Type, by area, hubs ranked by how many notes point to them, active in the last 30 days, Working notes going stale (90+ days, outside Archive), Reference to re-check (180+ days untouched).
+- **MOC Contents:** embedded in the MOC template, so every hub lists its connected notes (archived ones included).
+- [ ] Open each base in Obsidian and check every view renders (written from the docs, not yet seen in the app).
+- [ ] Decide: add the MOC Contents embed to the existing MOCs too?
 
 ### 6. Career Map
 Built with a deliberate top-down structure before the system existed (about 150 notes, 130 of them with no properties).
