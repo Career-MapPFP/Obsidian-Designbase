@@ -50,6 +50,12 @@ Run it whenever the Inbox needs clearing. No approvals, no marking notes done.
 - **Settings:** `Inbox Cleanup Settings.md`, one note per vault with the folder names and learned rules. It's created on the first run, so the tool works in any vault.
 - **First run (2026-10-13):** 17 Working notes archived, 1 Reference filed, 8 MOCs created, 3 blank notes deleted, 0 problems. The Inbox is empty apart from 2 Review notes.
 - Decisions made along the way: route by where a note belongs, not by whether it's finished; Archive means "out of the way"; every note gets a Parent (blank MOCs are fine); a skill, not an API script, so no extra setup or cost.
+- **Portable:** the unit you move is the whole Obsidian-Designbase repo folder, not the skill alone (the helper reuses `Scripts/vault_scan.py` and finds the vault by walking up from the repo). To use it in another vault, clone the repo anywhere inside that vault. Each vault gets its own settings note.
+- **Still to verify:**
+  - [ ] Open a fresh Claude Code session in this folder and check that `/clean-inbox` appears and runs from start to finish. So far the skill's steps were followed by hand in the session that built it.
+  - [ ] The learning loop: answer the 2 Review notes (the duplicates), run again, and check that a rule lands in the settings note.
+  - [ ] Undo on a real run. It's only been tested on a copy of the vault.
+- **Idea:** also learn from corrections. If you move a note the tool filed, or change its Parent, the next run could spot it (each run's undo record lists where every note went) and turn it into a rule.
 
 ### 5. Property Base
 A `.base` file in the repo for ongoing maintenance. It catches notes that drift from the system after the cleanup.
