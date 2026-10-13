@@ -28,7 +28,11 @@ Two Python scripts in `Scripts/` (standard library only, no AI). Run them whenev
 - The scripts are in the repo. The reports aren't, because they describe one specific vault.
 - **First run (2026-10-13):** 223 notes. 185 have no Note Type, 14 still use `Draft`, and 25 distinct properties are in use (17 of them outside the system). 31 tags, 15 of them used only once.
 
-### 3. Clean up properties on pre-system notes
+### ~~3. Clean up properties on pre-system notes~~ ✅ Done 2026-10-13 (open questions in `99. Inbox/Review/00. Cleanup Review`)
+- **Result:** 184 notes updated across the whole vault (Career Map included, Everyday left as is). Every note now has `Note Type` + `Parent`, old linking properties were turned into `Parent` or a `Related:` line, and Archive was flattened. Backup: `01. Obsidian Vaults/_Backups/`.
+- **Left for step 6:** about 110 Career Map notes have no Parent, because their folders have no hub yet.
+
+**Original plan:**
 Most of the vault was written before the system existed. One catch-up pass, not perfection.
 - **Scope:** every note **except** Career Map (step 6), `03. Everyday` (daily notes stay as they are) and `99. Inbox` (step 4).
 - Give each note `Note Type` + `Parent`, and remove old properties.
