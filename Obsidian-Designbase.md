@@ -19,7 +19,7 @@ This system has exactly two layers:
 
 If a rule doesn't obviously belong to Layer 1 or Layer 2, it doesn't belong in the system.
 
-**Folders are for browsing, metadata is for finding.** Retrieval depends on tags/properties/links, not folder placement — so reorganizing folders later is cosmetic, never structural. You should never need to "get the folders right."
+**Organization comes from links and properties, not folders.** Most computers train you to organize by folder; Obsidian is the opposite. Folders are just for browsing — so you never need to get them "right."
 
 The system is the same in every vault. Only the set of Concept folders changes (see This Vault below).
 

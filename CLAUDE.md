@@ -14,7 +14,17 @@ This folder holds the design for how the user organizes their Obsidian vault. Re
 
 - **[[Obsidian-Designbase]]** — the system itself and the source of truth. Read it before you touch notes anywhere in the vault.
 - **[[Obsidian Reference Guide - Backlog]]** — work that's planned or undecided, in priority order. The "Parked" and "Out of scope" lines are deliberate decisions.
-- Other notes are supporting research (for example, Obsidian vs Notion).
+- Other notes in this folder are the user's personal notes (see "Git repo" below).
+
+## Git repo
+
+This folder is a git repo that will eventually be published on GitHub, so anyone can use it to set up a vault with this system (Note Type, CIAA, and so on).
+
+- **What's tracked:** the shareable system, meaning `Obsidian-Designbase.md`, the Backlog (a public roadmap), this file, and `.gitignore`.
+- **What's excluded on purpose (listed in `.gitignore`):** `Career Map in Obsidian.md` and `Obsidian vs Notion.md`. They're about the user's own vault, and some of their links point to notes outside this folder, which would be broken for anyone else. They still exist in the folder and in Obsidian. Git just ignores them.
+- **For new files:** if a note is tied to the user's own vault, add it to `.gitignore`. If it's part of the shareable system, track it. If you're not sure, ask before committing. Anything committed stays in the git history after a push, even if it's deleted later.
+- **Before publishing:** the "Folders In This Vault" section of the design note describes the user's specific vault. Consider labeling it as an example for a public audience.
+- **Writing style:** keep the design note as simple and clear as possible. Prefer plain wording over clever wording.
 
 ## What this system is for
 
