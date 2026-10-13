@@ -20,7 +20,8 @@ This folder holds the design for how the user organizes their Obsidian vault. Re
 
 This folder is a git repo that will eventually be published on GitHub, so anyone can use it to set up a vault with this system (Note Type, CIAA, and so on).
 
-- **What's tracked:** the shareable system, meaning `Obsidian-Designbase.md`, the Backlog (a public roadmap), this file, and `.gitignore`.
+- **What's tracked:** the shareable system, meaning `Obsidian-Designbase.md`, the core templates in `Templates/` (one per Note Type), the Backlog (a public roadmap), this file, and `.gitignore`.
+- **Templates:** this folder is the vault's template folder, set in Obsidian's settings. Core templates (part of the system) sit in `Templates/`. Templates for this vault only (Daily, Career Map MOCs) sit in `Templates/Custom/`, which is in `.gitignore`. Custom templates add properties for a particular kind of Concept. Don't put them in the core templates.
 - **What's excluded on purpose (listed in `.gitignore`):** `Career Map in Obsidian.md` and `Obsidian vs Notion.md`. They're about the user's own vault, and some of their links point to notes outside this folder, which would be broken for anyone else. They still exist in the folder and in Obsidian. Git just ignores them.
 - **For new files:** if a note is tied to the user's own vault, add it to `.gitignore`. If it's part of the shareable system, track it. If you're not sure, ask before committing. Anything committed stays in the git history after a push, even if it's deleted later.
 - **Before publishing:** the "Folders In This Vault" section of the design note describes the user's specific vault. Consider labeling it as an example for a public audience.

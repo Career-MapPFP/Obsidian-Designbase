@@ -14,12 +14,11 @@ One step at a time, in this order. Each step makes the next one easier.
 
 ---
 
-### 1. Update the templates
-Do this first. Every new note starts from a template, so this stops more notes getting old properties.
-- Replace the 6 old templates with 3 (Working, Reference, MOC), each with only `tags`, `Note Type` and `Parent`.
-- Keep the Daily template as it is.
-- Old properties to remove: `Action`, `Concept`, `Reference`, `LEAP`, `Bucket`, `Sub-Bucket`, `Semester`, `Resource Type`, `Parent MOC`.
-- Retire the `Draft` template (Draft was folded into Working).
+### 1. Update the templates ✅ (2026-10-13)
+- Templates moved from `05. Record Keeping/Templates` into this repo's `Templates/` folder, and Obsidian's settings now point here.
+- Core templates (in the repo): Working, Reference, MOC, each with only `tags`, `Note Type` and `Parent`.
+- Custom templates (`Templates/Custom/`, left out of the repo): Daily (unchanged), plus `MOC CM` and `MOC Analysis` kept as-is as placeholders until step 6 decides on Career Map's customizations.
+- Old Working and Reference templates deleted (replaced). The retired Draft template moved to `999. Archive`.
 
 ### 2. Tag report
 Each tag is one row, with stats: how many notes use it, which folders, which Note Types, and first and last used.

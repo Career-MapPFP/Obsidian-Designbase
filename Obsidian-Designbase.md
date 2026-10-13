@@ -41,7 +41,7 @@ The system is the same in every vault. Only the set of Concept folders changes (
 - **Not for hierarchy** — that's `Parent`'s job. No nested tags (`#topic/subtopic`).
 
 ### Properties
-As few as possible, fixed by Note Type — never invented ad hoc per note.
+As few as possible, fixed by Note Type — never invented ad hoc per note. A vault can add properties for a kind of Concept through a custom template (see Templates).
 
 | Property    | Applies to  | Definition                                                                                                                                                      |
 | ----------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -107,18 +107,25 @@ Every note has exactly one Note Type.
 | `02. LABs`          | Concept   | Empty for now                                                        |
 | `03. Everyday`      | Concept   | Daily notes                                                          |
 | `04. Analysis`      | Concept   | Research and general-knowledge topics (Obsidian, Designbase, Website Hosting) |
-| `05. Record Keeping`| Admin     | Templates, attachments, data backups                                 |
+| `05. Record Keeping`| Admin     | Attachments, data backups (templates live in `Obsidian-Designbase/Templates`) |
 | `999. Archive`      | Archive   | Finished Working notes                                               |
 
 ---
 
 # Note Creation Workflow
 
-1. **Start in Inbox** from a template (`05. Record Keeping/Templates`) so properties are never typed from memory.
+1. **Start in Inbox** from a template (see Templates) so properties are never typed from memory.
 2. **Add a tag** — what IS this?
 3. **Set properties** — `Note Type`, and `Parent` (the nearest MOC it belongs to).
 4. **Link as you write.**
 5. **Move when ready** — per the Routing table above. MOCs skip the Inbox and are created where they live.
+
+---
+
+# Templates
+
+- **Core templates** — one per Note Type (Working, Reference, MOC), in `Templates/`. Part of the system.
+- **Custom templates** — a vault can add its own for a kind of Concept. Example: a Project MOC with `Start Date` and `Client`. They live in `Templates/Custom/` and belong to the vault, not the system.
 
 ---
 
