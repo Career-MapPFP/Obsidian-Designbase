@@ -14,13 +14,13 @@ One step at a time, in this order. Each step makes the next one easier.
 
 ---
 
-### 1. Update the templates ✅ (2026-10-13)
+### ~~1. Update the templates~~ ✅ Done 2026-10-13
 - Templates moved from `05. Record Keeping/Templates` into this repo's `Templates/` folder, and Obsidian's settings now point here.
 - Core templates (in the repo): Working, Reference, MOC, each with only `tags`, `Note Type` and `Parent`.
 - Custom templates (`Templates/Custom/`, left out of the repo): Daily (unchanged), plus `MOC CM` and `MOC Analysis` kept as-is as placeholders until step 6 decides on Career Map's customizations.
 - Old Working and Reference templates deleted (replaced). The retired Draft template moved to `999. Archive`.
 
-### 2. Tag and property reports ✅ (2026-10-13)
+### ~~2. Tag and property reports~~ ✅ Done 2026-10-13
 Two Python scripts in `Scripts/` (standard library only, no AI). Run them whenever you want an up-to-date picture of the vault.
 - `python3 Scripts/tag_report.py` writes `Reports/Tag Report.md`. One row per tag: how many notes, used in properties vs. inline, Note Types, folders, last edited. It also flags the same tag spelled differently, nested tags, and tags used in only one note.
 - `python3 Scripts/property_report.py` writes `Reports/Property Report.md`. One row per property: kind (system / Obsidian built-in / other), how many notes have it and how many fill it in, value types, common values, folders. It also has a system check (missing Note Type, invalid Note Types, missing Parent) and flags properties that are always empty.
@@ -35,6 +35,7 @@ Most of the vault was written before the system existed. One catch-up pass, not 
 - **Process:** Claude proposes properties in batches, the user approves, then Claude applies them.
 - Merge tags, using the tag report.
 - Flatten `999. Archive`: move the 10 files up out of the `Drafts` and `Working Notes` subfolders.
+- **Decide first:** MOC tag vs `Note Type: MOC`. 7 notes are tagged `MOC` but have no `Note Type`.
 
 ### 4. Inbox cleanup tool
 A tool kept in the repo that the user runs about once a week to clean up `99. Inbox`.
@@ -48,6 +49,7 @@ A tool kept in the repo that the user runs about once a week to clean up `99. In
 - Keyword matching in plain Python was dropped. Routing needs judgment, so AI does it.
 - **Leading option: a Claude Code skill** (`/clean-inbox`): one markdown file in the repo, included in the subscription, review step built in, and the file itself documents the procedure. Alternative: Python that calls the Claude API (needs an API key, costs per run).
 - Moving files is safe: links use note names, not folder paths. Watch for the few duplicate note names (for example, `Idea Promotion System.md`, `00. Intro.md`).
+- **Vault settings:** the tool moves files, so each vault states its folder names once (Inbox, Archive, Concept folders) in a short settings section. Nothing is hard-coded. The report scripts don't need this, because they only read the vault.
 
 ### 5. Property Base
 A `.base` file in the repo for ongoing maintenance. It catches notes that drift from the system after the cleanup.
@@ -62,11 +64,12 @@ Built with a deliberate top-down structure before the system existed (about 150 
 ---
 
 **Open decisions**
-- Step 2: is a Python report for tag stats plus Bases for note lists the right split?
 - Step 4: Claude Code skill or Python with the API? Should the first version ask the user to approve every note?
 
-**Parked:** Status/As of Date as standard? · MOC tag vs `Note Type: MOC` · `Designbase.md` has no folder · finish `Obsidian-Background`?
+**Parked:** Status/As of Date as standard? · `Designbase.md` has no folder · finish `Obsidian-Background`?
 
-**Decided:** Daily notes stay as they are in `03. Everyday`, and the cleanup doesn't touch them.
+**Decided:**
+- Daily notes stay as they are in `03. Everyday`, and the cleanup doesn't touch them.
+- ~~Step 2: Python reports for stats vs. Bases~~: Python reports for tag and property stats. Bases is saved for note lists (step 5).
 
 **Out of scope:** Idea promotion system
